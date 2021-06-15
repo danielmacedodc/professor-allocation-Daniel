@@ -30,7 +30,7 @@ public class Department {
 	private String name;
 	
 	@OneToMany(mappedBy = "department")
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OnDelete(action = OnDeleteAction.CASCADE) 
 	private List<Professor> professorList;
 	
 	public Department() {

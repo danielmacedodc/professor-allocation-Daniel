@@ -48,7 +48,7 @@ public class Allocation {
 	@Column(name = "professor", nullable = false, unique = false)
 	@OnDelete(action = OnDeleteAction.CASCADE) // essa lista é criada no banco como coluna ou tabela? precisa de nome ou outra especificação?
 	@ManyToOne(optional = false)
-	private Professor professor;
+	private Professor professor;//
 	
 	@Column(name = "curso", nullable = false, unique = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)

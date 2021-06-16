@@ -1,6 +1,5 @@
 package com.project.professorallocation.entity;
 
-import java.sql.Time;
 import java.time.DayOfWeek;
 import java.util.Date;
 
@@ -19,14 +18,11 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 
 @Entity
 @Table(name = "allocation")
-@NoArgsConstructor
-@Data
+//@NoArgsConstructor -> serve para evitar escrever construtor vazio
+//@Data
 public class Allocation {
 	
 	@Id
@@ -45,12 +41,12 @@ public class Allocation {
 	@Column(nullable = false, unique = false)
 	private Date timeEnd;
 	
-	@Column(name = "professor", nullable = false, unique = false)
+	//@Column(name = "professor", nullable = false, unique = false) -> n deve ser criada (pq?)
 	@OnDelete(action = OnDeleteAction.CASCADE) // essa lista é criada no banco como coluna ou tabela? precisa de nome ou outra especificação?
 	@ManyToOne(optional = false)
 	private Professor professor;//
 	
-	@Column(name = "curso", nullable = false, unique = false)
+	//@Column(name = "curso", nullable = false, unique = false) -> n deve ser criada (pq?)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(optional = false)
 	private Course course;
@@ -59,7 +55,7 @@ public class Allocation {
 		super();
 	}
 
-	public Allocation(Long id, DayOfWeek dayOfWeek, Time timeBegin, Time timeEnd, Professor professor, Course course) {
+	public Allocation(Long id, DayOfWeek dayOfWeek, Date timeBegin, Date timeEnd, Professor professor, Course course) {
 		super();
 		this.id = id;
 		this.dayOfWeek = dayOfWeek;

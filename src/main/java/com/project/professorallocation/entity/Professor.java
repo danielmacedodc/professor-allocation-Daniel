@@ -14,13 +14,11 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "professor")
-@NoArgsConstructor
-@Data
+//@NoArgsConstructor
+//@Data
 public class Professor {
 	
 	@Id

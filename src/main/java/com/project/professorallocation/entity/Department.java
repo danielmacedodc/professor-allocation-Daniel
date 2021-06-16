@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "department")
-@NoArgsConstructor
-@Data
+//@NoArgsConstructor Esta anotação serve justamente para que você não precise escrever o construtor vazio. Inclusive da erro.
+@Data // Com esta anotação você não precisa definir escrever os getters e setters
 public class Department {
 	
 	@Id

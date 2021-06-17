@@ -28,7 +28,7 @@ public class Professor {
 	@Column(name = "cpf", unique = true, nullable = false, length = 11)
 	private String cpf;
 	
-	@Column(name = "name", unique = true, nullable = false)
+	@Column(name = "name_professor", unique = true, nullable = false)
 	private String name;
 	
 	@OnDelete(action = OnDeleteAction.CASCADE)

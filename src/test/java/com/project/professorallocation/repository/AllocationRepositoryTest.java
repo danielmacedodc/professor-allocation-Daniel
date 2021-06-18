@@ -12,8 +12,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
 import com.project.professorallocation.entity.Allocation;
-import com.project.professorallocation.entity.Course;
-import com.project.professorallocation.entity.Professor;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -47,8 +45,8 @@ public class AllocationRepositoryTest {
 	@Test
 	void testByProfessor()
 	{
-		Professor professor = new Professor(); //implementa com .getName
-		List<Allocation> listProf = allocationRepository.findByAllocationLikeProfessor(professor);
+		Long id = 3L;
+		List<Allocation> listProf = allocationRepository.findByProfessorId(id);
 		
 		System.out.println(listProf.toString());
 	}
@@ -56,8 +54,8 @@ public class AllocationRepositoryTest {
 	@Test
 	void testByCourse()
 	{
-		Course course = new Course(); //implementa com .getName
-		List<Allocation> listCourse = allocationRepository.findByAllocationLikeCourse(course);
+		Long id = 3L;
+		List<Allocation> listCourse = allocationRepository.findByCourseId(id);
 		
 		System.out.println(listCourse.toString());
 	}
@@ -72,9 +70,11 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void test4(Long id)
+	void test4()
 	{
 		//Update (CRUD)
+		Long id = 3L;
+		
 		if(allocationRepository.existsById(id))
 		{
 			Optional<Allocation> optional = allocationRepository.findById(id);
@@ -85,9 +85,11 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void test5(Long id)
+	void test5()
 	{
 		//Delete (CRUD)
+		Long id = 2L;
+		
 		allocationRepository.deleteById(id);
 	}
 	

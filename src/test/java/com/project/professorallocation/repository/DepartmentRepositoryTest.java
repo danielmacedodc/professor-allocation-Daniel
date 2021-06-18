@@ -35,11 +35,11 @@ public class DepartmentRepositoryTest {
 	{
 		//Read by Id
 		
-		Long id = 1L; //selecione o id desejado
+		Long id = 2L; //selecione o id desejado
 		Optional<Department> optional = departmentRepository.findById(id);
 		Department d = optional.orElse(new Department());
 		
-		System.out.println(d.toString());
+		System.out.println(d);
 	}
 	
 	@Test
@@ -48,7 +48,7 @@ public class DepartmentRepositoryTest {
 		String name = "Física";
 		List<Department> list = departmentRepository.findByNameContainingIgnoreCase(name);
 		
-		System.out.println(list.toString());
+		System.out.println(list);
 	}
 	
 	@Test
@@ -57,13 +57,15 @@ public class DepartmentRepositoryTest {
 		//FindAll Read (CRUD)
 		List<Department> departmentList = departmentRepository.findAll();
 		
-		System.out.println(departmentList.toString());
+		System.out.println(departmentList);
 	}
 	
 	@Test
-	void test4(Long id)
+	void test4()
 	{
 		//Update (CRUD)
+		Long id = 3L;
+		
 		if(departmentRepository.existsById(id))
 		{
 			Optional<Department> optional = departmentRepository.findById(id);
@@ -74,9 +76,11 @@ public class DepartmentRepositoryTest {
 	}
 	
 	@Test
-	void test5(Long id)
+	void test5()
 	{
 		//Delete (CRUD)
+		Long id = 2L;
+		
 		departmentRepository.deleteById(id);
 	}
 	

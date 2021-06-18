@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -44,11 +45,13 @@ public class Allocation {
 	//@Column(name = "professor", nullable = false, unique = false) -> n deve ser criada (pq?)
 	@OnDelete(action = OnDeleteAction.CASCADE) // essa lista é criada no banco como coluna ou tabela? precisa de nome ou outra especificação?
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "professor_id", nullable = false)
 	private Professor professor;//
 	
 	//@Column(name = "curso", nullable = false, unique = false) -> n deve ser criada (pq?)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@ManyToOne(optional = false)
+	@JoinColumn(name = "course_id", nullable = false)
 	private Course course;
 	
 	public Allocation() {

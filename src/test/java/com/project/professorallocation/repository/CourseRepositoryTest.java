@@ -39,7 +39,7 @@ public class CourseRepositoryTest {
 		Optional<Course> optional = courseRepository.findById(id);
 		Course c = optional.orElse(new Course());
 		
-		System.out.println(c.toString());
+		System.out.println(c);
 	}
 	
 	@Test
@@ -48,7 +48,7 @@ public class CourseRepositoryTest {
 		String name = "Álgebra";
 		List<Course> list = courseRepository.findByNameContainingIgnoreCase(name);
 		
-		System.out.println(list.toString());
+		System.out.println(list);
 	}
 	
 	@Test
@@ -57,13 +57,15 @@ public class CourseRepositoryTest {
 		//FindAll Read (CRUD)
 		List<Course> courseList = courseRepository.findAll();
 		
-		System.out.println(courseList.toString());
+		System.out.println(courseList);
 	}
 	
 	@Test
-	void test4(Long id)
+	void test4()
 	{
 		//Update (CRUD)
+		Long id = 3L;
+		
 		if(courseRepository.existsById(id))
 		{
 			Optional<Course> optional = courseRepository.findById(id);
@@ -74,9 +76,11 @@ public class CourseRepositoryTest {
 	}
 	
 	@Test
-	void test5(Long id)
+	void test5()
 	{
 		//Delete (CRUD)
+		Long id = 2L;
+		
 		courseRepository.deleteById(id);
 	}
 	

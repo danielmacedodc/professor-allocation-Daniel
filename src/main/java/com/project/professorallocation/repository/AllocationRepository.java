@@ -6,13 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.project.professorallocation.entity.Allocation;
-import com.project.professorallocation.entity.Course;
-import com.project.professorallocation.entity.Professor;
 
 @Repository
 public interface AllocationRepository extends JpaRepository<Allocation, Long>{
 
-	List<Allocation> findByAllocationLikeProfessor(Professor professor);
+	List<Allocation> findByProfessorId(Long id);
 	
-	List<Allocation> findByAllocationLikeCourse(Course course);
+	List<Allocation> findByCourseId(Long id);
 }

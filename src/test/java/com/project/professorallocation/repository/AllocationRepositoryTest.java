@@ -13,6 +13,8 @@ import org.springframework.test.context.TestPropertySource;
 
 import com.project.professorallocation.entity.Allocation;
 
+// Os comentários nesta classe se aplicam as outras classes
+
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
@@ -23,15 +25,17 @@ public class AllocationRepositoryTest {
 	private AllocationRepository allocationRepository;
 	
 	@Test
-	void test1()
+	void test1()//problema
 	{
 		//Create (CRUD)
+		// Falta preencher os dados de alocação, deixa o ID com NULL
 		Allocation aloc = new Allocation();
+		// SAVE retorna dados, o correto seria pegar este resultado e fazer um println
 		allocationRepository.save(aloc);
 	}
 	
 	@Test
-	void test2()
+	void test2()//ok
 	{
 		//Read by Id
 		
@@ -43,7 +47,7 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void testByProfessor()
+	void testByProfessor()//ok
 	{
 		Long id = 3L;
 		List<Allocation> listProf = allocationRepository.findByProfessorId(id);
@@ -52,7 +56,7 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void testByCourse()
+	void testByCourse()//ok
 	{
 		Long id = 3L;
 		List<Allocation> listCourse = allocationRepository.findByCourseId(id);
@@ -61,7 +65,7 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void test3()
+	void test3()//ok
 	{
 		//FindAll Read (CRUD)
 		List<Allocation> allocationList = allocationRepository.findAll();
@@ -70,13 +74,16 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void test4()
+	void test4()//+ou- ok
 	{
 		//Update (CRUD)
 		Long id = 3L;
 		
 		if(allocationRepository.existsById(id))
 		{
+			// O fluxo não seria este. O correto seria ter uma alocação com o ID já existente,
+			// modificar algum dado, como você falou no comentário, e salvar essa alocação.
+			// De qualquer forma, o método serviu para entender o funcionamento do save em UPDATE.
 			Optional<Allocation> optional = allocationRepository.findById(id);
 			Allocation a = optional.get();
 			//User updates whatever he wants -> .setName/.setCPF/.setDepto
@@ -85,7 +92,7 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void test5()
+	void test5()//ok
 	{
 		//Delete (CRUD)
 		Long id = 2L;
@@ -94,7 +101,7 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void test6()
+	void test6()//ok
 	{
 		//Delete all in batch(CRUD)
 		allocationRepository.deleteAllInBatch();

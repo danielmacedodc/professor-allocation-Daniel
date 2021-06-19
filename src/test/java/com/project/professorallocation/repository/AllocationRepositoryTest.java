@@ -29,6 +29,7 @@ public class AllocationRepositoryTest {
 	{
 		//Create (CRUD)
 		// Falta preencher os dados de alocação, deixa o ID com NULL
+		// Este teste da um erro pois fere a restrição de não nulo para os atributos
 		Allocation aloc = new Allocation();
 		// SAVE retorna dados, o correto seria pegar este resultado e fazer um println
 		allocationRepository.save(aloc);

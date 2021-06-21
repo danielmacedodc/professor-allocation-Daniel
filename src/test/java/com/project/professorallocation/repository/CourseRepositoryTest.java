@@ -26,8 +26,22 @@ public class CourseRepositoryTest {
 	void test1()
 	{
 		//Create (CRUD)
+		
+		//From controller (Arrange)
 		Course course = new Course();
-		courseRepository.save(course);
+		course.setId(null);
+		
+		//saveInternal(course);
+		
+		/*course.setName("Economia");
+		course.setAllocation(null);
+		
+		//Service (Act)
+		course.setId(null);
+		Course newCourse = courseRepository.save(course);
+		//return newCourse;*/
+		
+		System.out.println(saveInternal(course));
 	}
 	
 	@Test
@@ -65,14 +79,14 @@ public class CourseRepositoryTest {
 	{
 		//Update (CRUD)
 		Long id = 3L;
+		Course course = new Course();
 		
-		if(courseRepository.existsById(id))
+		if(!courseRepository.existsById(id))
 		{
-			Optional<Course> optional = courseRepository.findById(id);
-			Course c = optional.get();
-			//User updates whatever he wants -> .setName/.setCPF/.setDepto
-			courseRepository.save(c);
+			//throw exception;
 		}
+		
+		System.out.println(saveInternal(course));
 	}
 	
 	@Test
@@ -89,5 +103,15 @@ public class CourseRepositoryTest {
 	{
 		//Delete all in batch(CRUD)
 		courseRepository.deleteAllInBatch();
+	}
+	
+	private Course saveInternal(Course course)
+	{
+		course.setId(null);
+		course.setName("Economia");
+		course.setAllocation(null);
+		
+		Course newCourse = courseRepository.save(course);
+		return newCourse;
 	}
 }

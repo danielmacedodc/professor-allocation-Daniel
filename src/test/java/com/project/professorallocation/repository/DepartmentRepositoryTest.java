@@ -26,8 +26,26 @@ public class DepartmentRepositoryTest {
 	void test1()
 	{
 		//Create (CRUD)
-		Department dept = new Department();
-		departmentRepository.save(dept);
+		//From crontroller (Arrange)
+		Department d = new Department();
+		d.setId(null);
+		/*d.setId(null);
+		d.setName("Departamento de Economia");
+		d.setProfessorList(null);
+		
+		//Service (Act)
+		d.setId(null);
+		Department newDepartment = departmentRepository.save(d);
+		//return newDepartment;*/
+		
+		System.out.println(saveInternal(d));
+		
+//		p.setId(null);
+//		Professor newProfessor = professorRepository.save(p);
+//		Long departmentId = newProfessor.getDepartment().getId();
+//		Department newDepartment = departmentRepository.findById(departmentId).orElse(null);
+//		newProfessor.setDepartment(newDepartment);
+
 	}
 	
 	@Test
@@ -65,21 +83,21 @@ public class DepartmentRepositoryTest {
 	{
 		//Update (CRUD)
 		Long id = 3L;
+		Department department = new Department();
 		
-		if(departmentRepository.existsById(id))
+		if(!departmentRepository.existsById(id))
 		{
-			Optional<Department> optional = departmentRepository.findById(id);
-			Department d = optional.get();
-			//User updates whatever he wants -> .setName/.setCPF/.setDepto
-			departmentRepository.save(d);
+			//throw exception;
 		}
+		
+		System.out.println(saveInternal(department));
 	}
 	
 	@Test
 	void test5()
 	{
 		//Delete (CRUD)
-		Long id = 2L;
+		Long id = 4L;
 		
 		departmentRepository.deleteById(id);
 	}
@@ -89,6 +107,16 @@ public class DepartmentRepositoryTest {
 	{
 		//Delete all in batch(CRUD)
 		departmentRepository.deleteAllInBatch();
-	}	
+	}
+	
+	private Department saveInternal(Department d)
+	{
+		d.setId(null);
+		d.setName("Departamento de Economia");
+		d.setProfessorList(null);
+		
+		Department newDepartment = departmentRepository.save(d);
+		return newDepartment;
+	}
 
 }

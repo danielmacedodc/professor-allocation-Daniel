@@ -1,5 +1,8 @@
 package com.project.professorallocation.repository;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +15,9 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
 import com.project.professorallocation.entity.Allocation;
+import com.project.professorallocation.entity.Course;
+import com.project.professorallocation.entity.Professor;
+import com.project.professorallocation.exception.ExceptionMessage;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
@@ -19,15 +25,42 @@ import com.project.professorallocation.entity.Allocation;
 @TestPropertySource(locations = "classpath:application.properties")
 public class AllocationRepositoryTest {
 	
+	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+	
 	@Autowired
 	private AllocationRepository allocationRepository;
 	
+	@Autowired
+	private ProfessorRepository professorRepository;
+	
+	@Autowired
+	private CourseRepository courseRepository;
+	
 	@Test
-	void test1()
+	void test1() throws ParseException
 	{
 		//Create (CRUD)
-		Allocation aloc = new Allocation();
-		allocationRepository.save(aloc);
+		Course course = new Course();
+		course.setId(1L);
+		
+		Professor professor = new Professor();
+		professor.setId(1L);
+		
+		Allocation alloc = new Allocation();
+		
+		alloc.setId(null);
+		alloc.setDayOfWeek(DayOfWeek.MONDAY);
+		alloc.setTimeBegin(sdf.parse("10:00"));
+		alloc.setTimeEnd(sdf.parse("12:00"));
+		
+		try
+		{
+			System.out.println(saveInternal(alloc));
+		}
+		catch(ExceptionMessage e)
+		{
+			System.out.println(e);
+		}
 	}
 	
 	@Test
@@ -70,17 +103,24 @@ public class AllocationRepositoryTest {
 	}
 	
 	@Test
-	void test4()
+	void test4() throws ExceptionMessage
 	{
 		//Update (CRUD)
 		Long id = 3L;
 		
 		if(allocationRepository.existsById(id))
 		{
-			Optional<Allocation> optional = allocationRepository.findById(id);
-			Allocation a = optional.get();
-			//User updates whatever he wants -> .setName/.setCPF/.setDepto
-			allocationRepository.save(a);
+			try
+			{
+				System.out.println(saveInternal(allocationRepository.getById(id)));
+				
+				//return saveInternal(allocationRepository.getById(id));
+			}
+			catch(ExceptionMessage e)
+			{
+				System.out.println(e);
+			}
+
 		}
 	}
 	
@@ -98,5 +138,60 @@ public class AllocationRepositoryTest {
 	{
 		//Delete all in batch(CRUD)
 		allocationRepository.deleteAllInBatch();
-	}	
+	}
+	
+	private Allocation saveInternal(Allocation allocation) throws ExceptionMessage
+	{
+		if(!hasAllocation(allocation))
+		{
+			Allocation newAllocation = allocationRepository.save(allocation);
+			newAllocation.setId(null);
+			
+			Long courseId = newAllocation.getCourse().getId();
+			Course newCourse = courseRepository.findById(courseId).orElse(null);
+			newAllocation.setCourse(newCourse);
+			
+			Long professorId = newAllocation.getProfessor().getId();
+			Professor newProfessor = professorRepository.findById(professorId).orElse(null);
+			newAllocation.setProfessor(newProfessor);
+			
+			return newAllocation;
+		}
+		
+		else
+		{
+			throw new ExceptionMessage("Erro na alocação");
+			//throw new AllocationCollisionException(allocation);
+		}
+	
+	}
+	
+	//avaliar se a alocação irá dar choque com outra
+	boolean hasAllocation(Allocation newAllocation)
+	{
+		boolean hasCollision = false; //a princípio, não tem choque
+		
+		List<Allocation> currentAllocations = allocationRepository.findByProfessorId(newAllocation.getProfessor().getId()); //seleciona todas as alocações daquele professor (id) e salva numa lista
+		
+		for(Allocation currentAllocation : currentAllocations)
+		{
+			hasCollision = hasAllocation(currentAllocation, newAllocation); //avalia alguma alocação daquela lista choca com a alocação atual
+			
+			if(hasCollision)
+			{
+				break;
+			}
+		}
+		
+		return hasCollision;
+	}
+	
+	//avaliar se ambas as alocações possuem mesmo horário, id e dia da semana
+	private boolean hasAllocation(Allocation currentAllocation, Allocation newAllocation)
+	{
+		return !currentAllocation.getId().equals(newAllocation.getId()) // se for o mesmo id é update, logo é preciso retornar falso o equals para ser passado como true
+				&& currentAllocation.getDayOfWeek() == newAllocation.getDayOfWeek()
+				&& currentAllocation.getTimeBegin().compareTo(newAllocation.getTimeEnd()) < 0 //avalia se o término da aula de alocação é "antes" que o de outra 
+				&& newAllocation.getTimeBegin().compareTo(currentAllocation.getTimeEnd()) < 0; //avalia se o começo da aula de alocação é "antes" de outra
+	}
 }

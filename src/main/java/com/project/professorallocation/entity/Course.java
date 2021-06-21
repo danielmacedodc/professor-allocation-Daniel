@@ -27,7 +27,7 @@ public class Course {
 	@Column(name = "name_course", unique = true, nullable = false)
 	private String name;
 	
-	@OneToMany(mappedBy = "professor")
+	@OneToMany(mappedBy = "course")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Allocation> allocation;
 	

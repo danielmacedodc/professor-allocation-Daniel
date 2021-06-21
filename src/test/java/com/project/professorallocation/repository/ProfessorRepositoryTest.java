@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
+import com.project.professorallocation.entity.Department;
 import com.project.professorallocation.entity.Professor;
 
 //Para teste é sempre classe
@@ -23,14 +24,34 @@ public class ProfessorRepositoryTest {
 	@Autowired
 	private ProfessorRepository professorRepository;
 	
+	@Autowired
+	private DepartmentRepository departmentRepository;
+	
 	//todo método de teste é void
 	
 	@Test
 	void test1()
 	{
 		//Create (CRUD)
-		Professor professor = new Professor();
-		professorRepository.save(professor);
+		//From service (Arrange)
+		Department depto = new Department();
+		depto.setId(1L);
+		
+		Professor prof = new Professor();
+		prof.setId(null);
+		prof.setCpf("99988877765");
+		prof.setName("Dani");
+		prof.setDepartment(depto);
+		
+		//In service (Act)
+		/*Professor newProfessor = professorRepository.save(prof);
+		Long departmentId = newProfessor.getDepartment().getId();
+		
+		Department newDepto = departmentRepository.findById(departmentId).orElse(null);
+		newProfessor.setDepartment(newDepto);
+		//return newProfessor;*/
+		
+		System.out.println(saveInternal(prof));
 	}
 	
 	@Test
@@ -71,10 +92,7 @@ public class ProfessorRepositoryTest {
 		Long id = 3L;
 		if(professorRepository.existsById(id))
 		{
-			Optional<Professor> optional = professorRepository.findById(id);
-			Professor p = optional.get();
-			//User updates whatever he wants -> .setName/.setCPF/.setDepto
-			professorRepository.save(p);
+			//throw exception;
 		}
 	}
 	
@@ -91,6 +109,17 @@ public class ProfessorRepositoryTest {
 	{
 		//Delete all in batch(CRUD)
 		professorRepository.deleteAllInBatch();
+	}
+	
+	private Professor saveInternal(Professor professor)
+	{
+		Professor newProfessor = professorRepository.save(professor);
+		Long departmentId = newProfessor.getDepartment().getId();
+		
+		Department newDepto = departmentRepository.findById(departmentId).orElse(null);
+		newProfessor.setDepartment(newDepto);
+		
+		return newProfessor;
 	}
 	
 }

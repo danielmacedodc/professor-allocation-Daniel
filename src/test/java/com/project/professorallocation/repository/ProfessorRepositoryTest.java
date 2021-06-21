@@ -92,6 +92,7 @@ public class ProfessorRepositoryTest {
 		Long id = 3L;
 		if(professorRepository.existsById(id))
 		{
+			System.out.println(saveInternal(professorRepository.getById(id)));
 			//throw exception;
 		}
 	}
